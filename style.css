@@ -14,7 +14,7 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 350px;
 }
 
 h1 {
@@ -30,14 +30,15 @@ h1 {
 
 .slot {
     font-size: 48px;
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     background-color: #ddd;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 10px;
+    margin: 0 5px;
     border-radius: 10px;
+    transition: color 0.5s ease-in-out;
 }
 
 button {
@@ -61,4 +62,13 @@ p {
 
 #result {
     font-weight: bold;
+}
+
+.counters {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.counters p {
+    margin: 5px;
 }

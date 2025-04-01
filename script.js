@@ -3,62 +3,111 @@ function getRandomNumber() {
     return Math.floor(Math.random() * 9) + 1;
 }
 
+// Initialize counters
+let playCount = 0;
+let winCount = 0;
+let lossCount = 0;
+
+// Function to update counters on the screen
+function updateCounters() {
+    document.getElementById("playCount").textContent = playCount;
+    document.getElementById("winCount").textContent = winCount;
+    document.getElementById("lossCount").textContent = lossCount;
+}
+
 // Function to simulate the spinning effect and stop one by one
 function spinSlots() {
-    const slot1 = document.getElementById("slot1");
-    const slot2 = document.getElementById("slot2");
-    const slot3 = document.getElementById("slot3");
+    const slots = [
+        document.getElementById("slot1"),
+        document.getElementById("slot2"),
+        document.getElementById("slot3"),
+        document.getElementById("slot4"),
+        document.getElementById("slot5")
+    ];
+    
     const result = document.getElementById("result");
-
     result.textContent = "Spinning...";
     result.style.color = "black";
 
-    let spins = 15; // Faster spinning effect (more cycles before stopping)
-    let slot1Value, slot2Value, slot3Value;
+    let spins = 15; // Faster spinning effect
+    let slotValues = [];
+
+    playCount++; // Increase play count
 
     // Function to animate a slot stopping
-    function spinSlot(slot, delay, callback) {
+    function spinSlot(index, delay, callback) {
         let count = 0;
         let interval = setInterval(() => {
-            slot.textContent = getRandomNumber(); // Change the number rapidly
+            slots[index].textContent = getRandomNumber();
+            slots[index].style.color = "black"; // Reset color
             count++;
             if (count >= spins) {
                 clearInterval(interval);
                 let finalNumber = getRandomNumber();
-                slot.textContent = finalNumber;
-                callback(finalNumber); // Call the callback with the final number
+                slots[index].textContent = finalNumber;
+                slotValues[index] = finalNumber;
+                callback(finalNumber);
             }
-        }, 50); // Faster change speed
+        }, 50); // Speed of change
     }
 
-    // Spin each slot one after the other
-    spinSlot(slot1, 0, (num) => {
-        slot1Value = num;
-        spinSlot(slot2, 400, (num) => {
-            slot2Value = num;
-            spinSlot(slot3, 800, (num) => {
-                slot3Value = num;
-
-                // Check for winning conditions
-                if (slot1Value === 7 && slot2Value === 7 && slot3Value === 7) {
-                    result.textContent = "JACKPOT! 🎉 Three 7's!";
-                    result.style.color = "gold";
-                } else if (slot1Value === slot2Value && slot2Value === slot3Value) {
-                    result.textContent = "Big Win! 🎊 Three matching numbers!";
-                    result.style.color = "green";
-                } else if ((slot1Value === 7 && slot2Value === 7) || 
-                           (slot1Value === 7 && slot3Value === 7) || 
-                           (slot2Value === 7 && slot3Value === 7)) {
-                    result.textContent = "Small Win! 🎈 Two 7's!";
-                    result.style.color = "blue";
-                } else {
-                    result.textContent = "Try again!";
-                    result.style.color = "red";
-                }
+    // Spin each slot one after another
+    spinSlot(0, 0, () => {
+        spinSlot(1, 300, () => {
+            spinSlot(2, 600, () => {
+                spinSlot(3, 900, () => {
+                    spinSlot(4, 1200, () => {
+                        checkWin(slotValues);
+                    });
+                });
             });
         });
     });
 }
 
+// Function to check if the player won
+function checkWin(slotValues) {
+    const result = document.getElementById("result");
+
+    let allSame = slotValues.every((num) => num === slotValues[0]);
+    let hasThreeSevens =
+        slotValues.filter((num) => num === 7).length >= 3;
+
+    if (allSame) {
+        result.textContent = "BIG WIN! 🎉 Five matching numbers!";
+        result.style.color = "gold";
+        winCount++;
+        colorWinningNumbers("gold");
+    } else if (hasThreeSevens) {
+        result.textContent = "LUCKY! 🍀 Three or more 7's!";
+        result.style.color = "green";
+        winCount++;
+        colorWinningNumbers("green");
+    } else {
+        result.textContent = "Try again!";
+        result.style.color = "red";
+        lossCount++;
+    }
+
+    updateCounters();
+}
+
+// Function to change the color of winning numbers
+function colorWinningNumbers(color) {
+    const slots = [
+        document.getElementById("slot1"),
+        document.getElementById("slot2"),
+        document.getElementById("slot3"),
+        document.getElementById("slot4"),
+        document.getElementById("slot5")
+    ];
+    slots.forEach((slot) => {
+        slot.style.color = color;
+    });
+}
+
 // Attach event listener to spin button
 document.getElementById("spinButton").addEventListener("click", spinSlots);
+
+// Initialize counters on page load
+updateCounters();

@@ -9,16 +9,24 @@
 <body>
     <div class="game-container">
         <h1>Slot Machine Game</h1>
-        <p>Try to get three 7's in a row to win!</p>
+        <p>Try to get five matching numbers or at least three 7's to win!</p>
         
         <div class="slot-machine">
             <div class="slot" id="slot1">0</div>
             <div class="slot" id="slot2">0</div>
             <div class="slot" id="slot3">0</div>
+            <div class="slot" id="slot4">0</div>
+            <div class="slot" id="slot5">0</div>
         </div>
 
         <button id="spinButton">Spin</button>
         <p id="result"></p>
+
+        <div class="counters">
+            <p>Plays: <span id="playCount">0</span></p>
+            <p>Wins: <span id="winCount">0</span></p>
+            <p>Losses: <span id="lossCount">0</span></p>
+        </div>
     </div>
 
     <script src="script.js"></script>

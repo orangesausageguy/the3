@@ -63,6 +63,8 @@ function spinSlots() {
             });
         });
     });
+
+    updateCounters(); // Update counters after every spin
 }
 
 // Function to check if the player won

@@ -51,20 +51,20 @@ function spinSlots() {
         }, 50); // Speed of change
     }
 
-    // Spin each slot one after another
+    // Spin the first three slots with randomness
     spinSlot(0, 0, () => {
         spinSlot(1, 300, () => {
             spinSlot(2, 600, () => {
-                spinSlot(3, 900, () => {
-                    spinSlot(4, 1200, () => {
-                        checkWin(slotValues);
-                    });
-                });
+                // Make the last two slots match the first three
+                slotValues[3] = slotValues[0];
+                slotValues[4] = slotValues[1];
+                slots[3].textContent = slotValues[3];
+                slots[4].textContent = slotValues[4];
+
+                checkWin(slotValues);
             });
         });
     });
-
-    updateCounters(); // Update counters after every spin
 }
 
 // Function to check if the player won
